@@ -1,0 +1,6 @@
+North manhattan Before study 2026/
+.venv/
+__pycache__/
+*.pyc
+.vscode/
+.streamlit/
