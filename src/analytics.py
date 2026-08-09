@@ -7,6 +7,7 @@ def run_query(query, params=None):
     """Execute a SQL query and return the results as a DataFrame."""
 
     conn = create_connection()
+
     result = pd.read_sql_query(
         query,
         conn,
@@ -14,6 +15,7 @@ def run_query(query, params=None):
     )
 
     conn.close()
+
     return result
 
 
@@ -21,7 +23,8 @@ def get_corridors():
     """Get all available traffic corridors."""
 
     query = """
-        SELECT DISTINCT link_name
+        SELECT DISTINCT
+            link_name
         FROM traffic_speed
         ORDER BY link_name;
     """
@@ -30,12 +33,13 @@ def get_corridors():
 
 
 def hourly_speed(corridor):
+    """Calculate average speed by hour for a corridor."""
 
     query = """
         SELECT
             hour,
-            AVG(speed_mph) AS avg_speed
-
+            ROUND(AVG(speed_mph), 2) AS avg_speed,
+            COUNT(*) AS observations
         FROM traffic_speed
         WHERE link_name = ?
         GROUP BY hour
@@ -49,10 +53,13 @@ def hourly_speed(corridor):
 
 
 def corridor_speed():
-    """Calculate average speed for each corridor."""
+    """Compare average speed across corridors."""
 
     query = """
-        SELECT link_name, AVG(speed_mph) AS avg_speed
+        SELECT
+            link_name,
+            ROUND(AVG(speed_mph), 2) AS avg_speed,
+            COUNT(*) AS observations
         FROM traffic_speed
         GROUP BY link_name
         ORDER BY avg_speed ASC;
@@ -65,7 +72,10 @@ def slowest_hours():
     """Find the five slowest hours across all corridors."""
 
     query = """
-        SELECT hour, AVG(speed_mph) AS avg_speed
+        SELECT
+            hour,
+            ROUND(AVG(speed_mph), 2) AS avg_speed,
+            COUNT(*) AS observations
         FROM traffic_speed
         GROUP BY hour
         ORDER BY avg_speed ASC
@@ -76,10 +86,13 @@ def slowest_hours():
 
 
 def daily_speed(corridor):
-    """Calculate average speed by day of week."""
+    """Calculate average speed by day of week for a corridor."""
 
     query = """
-        SELECT day_of_week, AVG(speed_mph) AS avg_speed
+        SELECT
+            day_of_week,
+            ROUND(AVG(speed_mph), 2) AS avg_speed,
+            COUNT(*) AS observations
         FROM traffic_speed
         WHERE link_name = ?
         GROUP BY day_of_week
@@ -90,3 +103,38 @@ def daily_speed(corridor):
         query,
         [corridor]
     )
+
+
+def slowest_hours():
+    """Find the five slowest corridor-hour combinations."""
+
+    query = """
+        SELECT
+            link_name,
+            hour,
+            ROUND(AVG(speed_mph), 2) AS avg_speed,
+            COUNT(*) AS observations
+        FROM traffic_speed
+        GROUP BY link_name, hour
+        ORDER BY avg_speed ASC
+        LIMIT 5;
+    """
+
+    return run_query(query)
+
+def fastest_hours():
+    """Find the five fastest corridor-hour combinations."""
+
+    query = """
+        SELECT
+            link_name,
+            hour,
+            ROUND(AVG(speed_mph), 2) AS avg_speed,
+            COUNT(*) AS observations
+        FROM traffic_speed
+        GROUP BY link_name, hour
+        ORDER BY avg_speed DESC
+        LIMIT 5;
+    """
+
+    return run_query(query)

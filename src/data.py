@@ -1,6 +1,5 @@
 from pathlib import Path
 import sqlite3
-
 import pandas as pd
 
 
@@ -72,9 +71,6 @@ def initialize_database():
     """Load, clean, and store the traffic data."""
 
     df = load_data()
-
     df = clean_data(df)
-
     load_to_database(df)
-
     return df

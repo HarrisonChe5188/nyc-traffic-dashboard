@@ -1,6 +1,5 @@
 import plotly.express as px
 
-
 def hourly_speed_plot(df, corridor):
     """Plot average speed by hour of day."""
 
@@ -24,22 +23,6 @@ def hourly_speed_plot(df, corridor):
     return fig
 
 
-def corridor_speed_plot(df):
-    """Plot average speed by corridor."""
-
-    fig = px.bar(
-        df,
-        x="link_name",
-        y="avg_speed",
-        title="Average Speed by Corridor"
-    )
-
-    fig.update_layout(
-        xaxis_title="Corridor",
-        yaxis_title="Average Speed (mph)"
-    )
-
-    return fig
 
 
 def daily_speed_plot(df, corridor):
