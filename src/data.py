@@ -1,7 +1,7 @@
 from pathlib import Path
 import sqlite3
 import pandas as pd
-
+import streamlit as st
 
 # Project root
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -66,7 +66,7 @@ def load_to_database(df):
 
     conn.close()
 
-
+@st.cache_resource
 def initialize_database():
     """Load, clean, and store the traffic data."""
 
