@@ -91,19 +91,19 @@ with col1:
 
 with col2:
     st.metric(
-        "Slowest Hour and Speed",
+        "Slowest Hour",
         f"{int(slowest_hour):02d}:00",
-        f"{slowest_speed:.1f} mph",
-        delta_arrow = "off"
+        f"{slowest_speed:.1f} mph"
     )
+    st.caption(f"n = {int(slowest_row['observations'])} observations")
 
 with col3:
     st.metric(
-        "Fastest Hour and Speed",
+        "Fastest Hour",
         f"{int(fastest_hour):02d}:00",
-        f"{fastest_speed:.1f} mph",
-        delta_arrow = "off"
+        f"{fastest_speed:.1f} mph"
     )
+    st.caption(f"n = {int(fastest_row['observations'])} observations")
 
 
 # Key findings
@@ -152,10 +152,10 @@ slowest_day = daily_data.loc[
 
 st.write(
     f"""
-    Speeds were highest on **{fastest_day['day_of_week']}**
+    Speeds were highest on **{fastest_day['date']}**
     at **{fastest_day['avg_speed']:.1f} mph**.
 
-    Speeds were lowest on **{slowest_day['day_of_week']}**
+    Speeds were lowest on **{slowest_day['date']}**
     at **{slowest_day['avg_speed']:.1f} mph**.
     """
 )
@@ -202,6 +202,7 @@ for _, row in overall_slowest.iterrows():
         f"- **{row['link_name']}** — "
         f"{int(row['hour']):02d}:00 — "
         f"**{row['avg_speed']:.1f} mph**"
+        f"(n={int(row['observations'])})"
     )
 
 # Fastest hours across all corridors
@@ -218,4 +219,5 @@ for _, row in overall_fastest.iterrows():
         f"- **{row['link_name']}** — "
         f"{int(row['hour']):02d}:00 — "
         f"**{row['avg_speed']:.1f} mph**"
+        f"(n={int(row['observations'])})"
     )

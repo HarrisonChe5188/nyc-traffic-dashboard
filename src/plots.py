@@ -26,17 +26,17 @@ def hourly_speed_plot(df, corridor):
 
 
 def daily_speed_plot(df, corridor):
-    """Plot average speed by day of week."""
+    """Plot average speed by date."""
 
     fig = px.bar(
         df,
-        x="day_of_week",
+        x="date",
         y="avg_speed",
         title=f"Average Speed by Day — {corridor}"
     )
 
     fig.update_layout(
-        xaxis_title="Day",
+        xaxis_title="Date",
         yaxis_title="Average Speed (mph)"
     )
 

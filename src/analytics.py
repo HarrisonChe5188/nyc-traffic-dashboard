@@ -75,17 +75,17 @@ def corridor_speed():
 
 @st.cache_data
 def daily_speed(corridor):
-    """Calculate average speed by day of week for a corridor."""
+    """Calculate average speed by calendar date for a corridor."""
 
     query = """
         SELECT
-            day_of_week,
+            DATE(timestamp) AS date,
             ROUND(AVG(speed_mph), 2) AS avg_speed,
             COUNT(*) AS observations
         FROM traffic_speed
         WHERE link_name = ?
-        GROUP BY day_of_week
-        ORDER BY avg_speed ASC;
+        GROUP BY DATE(timestamp)
+        ORDER BY DATE(timestamp);
     """
 
     return run_query(
