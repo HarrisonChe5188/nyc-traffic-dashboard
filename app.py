@@ -171,21 +171,16 @@ st.plotly_chart(
 
 # Overall dataset findings
 st.subheader("Across All Corridors")
-
+st.caption(
+    "Note: Differences of less than ~0.5 mph between corridors may fall "
+    "within normal variability given sample sizes and standard deviation "
+    "shown above, and are not confirmed with a formal significance test."
+)
 corridor_data = corridor_speed()
+st.dataframe(corridor_data, use_container_width=True)
+
 fastest_corridor = corridor_data.iloc[-1]
 slowest_corridor = corridor_data.iloc[0]
-
-st.write(
-    f"""
-    Across the analyzed corridors, **{slowest_corridor['link_name']}**
-    had the lowest average speed at
-    **{slowest_corridor['avg_speed']:.1f} mph**.
-
-    **{fastest_corridor['link_name']}** had the highest average speed
-    at **{fastest_corridor['avg_speed']:.1f} mph**.
-    """
-)
 
 
 # Slowest hours across all corridors

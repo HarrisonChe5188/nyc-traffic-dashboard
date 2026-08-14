@@ -58,19 +58,22 @@ def hourly_speed(corridor):
 
 @st.cache_data
 def corridor_speed():
-    """Compare average speed across corridors."""
+    """Compare average, median, and variability of speed across corridors."""
 
-    query = """
-        SELECT
-            link_name,
-            ROUND(AVG(speed_mph), 2) AS avg_speed,
-            COUNT(*) AS observations
-        FROM traffic_speed
-        GROUP BY link_name
-        ORDER BY avg_speed ASC;
-    """
+    df = run_query("SELECT link_name, speed_mph FROM traffic_speed")
 
-    return run_query(query)
+    summary = df.groupby("link_name")["speed_mph"].agg(
+        avg_speed="mean",
+        median_speed="median",
+        std_speed="std",
+        observations="count"
+    ).reset_index()
+
+    summary["avg_speed"] = summary["avg_speed"].round(2)
+    summary["median_speed"] = summary["median_speed"].round(2)
+    summary["std_speed"] = summary["std_speed"].round(2)
+
+    return summary.sort_values("avg_speed")
 
 
 @st.cache_data
