@@ -52,17 +52,13 @@ nyc-traffic-dashboard/
 │
 └── src/
     ├── analytics.py
-    ├── cleaning.py
     ├── data.py
-    ├── loader.py
     └── plots.py
 ```
 
 ### Key Components
 
-**`cleaning.py`** — Cleans and transforms raw traffic data using Pandas.
-
-**`data.py`** — Creates the SQLite database and manages the traffic data table.
+**`data.py`** — Cleans and transforms raw traffic data using Pandas and creates the SQLite database and manages the traffic data table.
 
 **`analytics.py`** — Contains SQL queries for traffic analysis.
 
