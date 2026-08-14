@@ -66,6 +66,8 @@ def load_to_database(df):
 
     conn.close()
 
+# use decorator so initialize_database() doesn't re-read the CSV and rebuild the SQLite table on every  interaction. \
+# Used cache_resource (not cache_data) as we wish to cache the side effect of writing to the DB connection, not a serializable return value (opposed to a sql query). 
 @st.cache_resource
 def initialize_database():
     """Load, clean, and store the traffic data."""
