@@ -85,21 +85,24 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.metric(
         "Average Speed",
-        f"{average_speed:.1f} mph"
+        f"{average_speed:.1f} mph",
+        delta_arrow = "off"
     )
 
 with col2:
     st.metric(
-        "Slowest Hour",
+        "Slowest Hour and Speed",
         f"{int(slowest_hour):02d}:00",
-        f"{slowest_speed:.1f} mph"
+        f"{slowest_speed:.1f} mph",
+        delta_arrow = "off"
     )
 
 with col3:
     st.metric(
-        "Fastest Hour",
+        "Fastest Hour and Speed",
         f"{int(fastest_hour):02d}:00",
-        f"{fastest_speed:.1f} mph"
+        f"{fastest_speed:.1f} mph",
+        delta_arrow = "off"
     )
 
 

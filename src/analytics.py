@@ -1,3 +1,5 @@
+import streamlit as st
+
 from src.data import create_connection
 
 import pandas as pd
@@ -19,6 +21,7 @@ def run_query(query, params=None):
     return result
 
 
+@st.cache_data
 def get_corridors():
     """Get all available traffic corridors."""
 
@@ -32,6 +35,7 @@ def get_corridors():
     return run_query(query)
 
 
+@st.cache_data
 def hourly_speed(corridor):
     """Calculate average speed by hour for a corridor."""
 
@@ -52,6 +56,7 @@ def hourly_speed(corridor):
     )
 
 
+@st.cache_data
 def corridor_speed():
     """Compare average speed across corridors."""
 
@@ -68,23 +73,7 @@ def corridor_speed():
     return run_query(query)
 
 
-def slowest_hours():
-    """Find the five slowest hours across all corridors."""
-
-    query = """
-        SELECT
-            hour,
-            ROUND(AVG(speed_mph), 2) AS avg_speed,
-            COUNT(*) AS observations
-        FROM traffic_speed
-        GROUP BY hour
-        ORDER BY avg_speed ASC
-        LIMIT 5;
-    """
-
-    return run_query(query)
-
-
+@st.cache_data
 def daily_speed(corridor):
     """Calculate average speed by day of week for a corridor."""
 
@@ -105,6 +94,7 @@ def daily_speed(corridor):
     )
 
 
+@st.cache_data
 def slowest_hours():
     """Find the five slowest corridor-hour combinations."""
 
@@ -122,6 +112,8 @@ def slowest_hours():
 
     return run_query(query)
 
+
+@st.cache_data
 def fastest_hours():
     """Find the five fastest corridor-hour combinations."""
 
